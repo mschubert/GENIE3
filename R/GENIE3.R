@@ -185,7 +185,11 @@ function(exprMatrix, regulators=NULL, targets=NULL, treeMethod="RF", K="sqrt", n
 
       # weightMatrix.reg <- foreach::foreach(targetName=targetNames, .combine=cbind) %dorng%
       "%dopar%"<- foreach::"%dopar%"
-      suppressPackageStartupMessages(weightMatrix.reg <- doRNG::"%dorng%"(foreach::foreach(targetName=targetNames, .combine=cbind),
+      suppressPackageStartupMessages(weightMatrix.reg <- doRNG::"%dorng%"(
+          foreach::foreach(targetName=targetNames, .combine=cbind,
+              .export=c("regulatorNames", "K", "num.samples", "exprMatrixT",
+                        "nmin", "ET_randomisation", "RF_randomisation", "nTrees",
+                        "bootstrap_sampling", "permutation_importance", ".setMtry")),
       {
           # remove target gene from input genes
           theseRegulatorNames <- setdiff(regulatorNames, targetName)
